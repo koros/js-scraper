@@ -1,0 +1,21 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "Web scraper that uses casperjs and phantomjs to scrape contents of a web page",
+  "main": "common.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "casperjs",
+    "phantomjs",
+    "web",
+    "scraper"
+  ],
+  "author": "korosmatick",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "lodash": "^4.16.4"
+  }
+}
