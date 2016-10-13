@@ -11,20 +11,19 @@ var casper = require('casper').create({
 
 var links = []; 
 
-function getEventLinks() {
-	var links = $('.event-box h3 a');
-	return _.map(links, function(e){
+function getJobsLinks() {
+	var links = $('.jobsboard-row h3 a');
+	return _.map(links, function(e) {
 		return e.getAttribute('href');
 	});
 };
 
-casper.start('http://ihub.co.ke/events', function() {
+casper.start('http://ihub.co.ke/jobs', function() {
     this.echo(this.getTitle());
 });
 
 casper.then(function() {
-	links = [];
-	links = links.concat(this.evaluate(getEventLinks));
+	links = links.concat(this.evaluate(getJobsLinks));
 	this.echo(this.getCurrentUrl());
 });
 
@@ -37,35 +36,35 @@ casper.then(function() {
 	 	casper.thenOpen('http://ihub.co.ke' + url, function() {
 	 		
             var text = this.evaluate(function() {
-		        return document.querySelector(".full-event-details p").outerHTML;
+		        return document.querySelector(".job-content").innerHTML;
 		    });
 
 		    var title = this.evaluate(function() {
-		        return document.querySelector(".full-event-view h1").innerHTML;
+		        return document.querySelector(".job-article-header h1").innerHTML;
 		    });
 
-		    var organiser = this.evaluate(function() {
-		        return document.querySelector(".host-organizer").textContent;
+		    var added = this.evaluate(function() {
+		        return document.querySelector(".job-article-header li:nth-child(1)").textContent;
 		    });
 
-		    var date = this.evaluate(function() {
-		        return document.querySelector(".attend-details").textContent;
+		    var applyBy = this.evaluate(function() {
+		        return document.querySelector(".job-article-header li:nth-child(2)").textContent;
 		    });
 
-			var hostName = this.evaluate(function() {
-		        return document.querySelector(".host-name").textContent;
+		    var category = this.evaluate(function() {
+		        return document.querySelector(".job-article-header li:nth-child(4)").textContent;
 		    });
 
-		    var img = this.evaluate(function() {
-		        return document.querySelector('.full-event-image img').src;
+		    var postedBy = this.evaluate(function() {
+		        return document.querySelector(".uploader-company").textContent;
 		    });
 
+			
 		    this.echo(' >>> Title :: ' + title);
 		    this.echo(' \t Text :: ' + text);
-		    this.echo(' \t organiser :: ' + organiser);
-		    this.echo(' \t date :: ' + date);
-		    this.echo(' \t hostName :: ' + hostName);
-		    this.echo(' \t image :: ' + img);
+		    this.echo(' \t added :: ' + added);
+		    this.echo(' \t applyBy :: ' + applyBy);
+		    this.echo(' \t category :: ' + category);
 
         });
 	 }
