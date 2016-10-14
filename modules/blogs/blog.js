@@ -12,6 +12,7 @@ var casper = require('casper').create({
 var blogLinks = []; 
 var eventsLinks = [];
 var jobsLinks = [];
+var save_blog_api_url = "http://localhost:3000/blog";
 
 function getBlogLinks() {
 	var links = $('.blog-item h3 a');
@@ -33,6 +34,24 @@ function getJobsLinks() {
 		return e.getAttribute('href');
 	});
 };
+
+function saveInfo(blog) {
+  this.start();
+  this.then(function() {
+    this.thenOpen(save_blog_api_url, {
+      method: "POST",
+      data: JSON.stringify(blog),
+      headers: {
+        "Content-Type":"application/json"
+      }
+    },function(response){
+      this.echo("POSTED: ");
+      this.echo(JSON.stringify(response));
+      this.exit();
+    });
+  });
+  this.run();
+}
 
 casper.start('http://ihub.co.ke/blogs/', function() {
     this.echo(this.getTitle());
@@ -77,6 +96,20 @@ casper.then(function() {
 		    this.echo(' \t author :: ' + author);
 		    this.echo(' \t initiative :: ' + initiative);
 		    this.echo(' \t image :: ' + img);
+
+		    var postItem = {title:title, text:text, author:author, initiative:initiative, img:img};
+
+		    this.echo('POST DATA ' + JSON.stringify(postItem));
+		    
+		    casper.thenOpen(save_blog_api_url, {
+		      method: "POST",
+		      data: JSON.stringify(postItem),
+		      headers: {
+		        "Content-Type":"application/json"
+		      }
+		    },function() {
+		      console.log('finished');
+		    });
 
         });
 	 }

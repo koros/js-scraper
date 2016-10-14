@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var async = require('async');
 var morgan = require('morgan');
 
-var Blog = require('../blogs/blog.model.js');
+var model = require('../blogs/blog.model');
 
 var app = express();
 
@@ -16,7 +16,8 @@ var app = express();
 app.use(bodyParser.json());
 app.use(morgan('dev'));
    
-var mongoose = require ("mongoose"); // The reason for this demo.
+var mongoose = require ("mongoose");
+var  Blog = mongoose.model('Blog');
 
 // connection string
 var dbUrl = 'mongodb://localhost/crawler_data';
@@ -30,8 +31,31 @@ mongoose.connect(dbUrl, function (err, res) {
   }
 });
 
-app.post('/blog', function(req, res){
-  
+
+
+app.post('/blog', function (req, res) {
+  try {
+    console.log("Recieved Request From: "+ req.ip);
+    var blog = req.body;
+    
+    console.log('================================================');
+	console.log('SAVING :: ' + blog.title);
+    console.log('================================================');
+
+    var b = new Blog();
+    b.title = blog.title;
+    b.text = blog.text;
+    b.author = blog.author;
+    b.initiative = blog.initiative;
+    b.image = blog.image;
+    b.save();
+
+    res.json("saved");
+
+  } catch (e) {
+  	console.log(e.toString());
+    res.status(400).send('Invalid JSON Supplied: ' + e.toString());
+  }
 });
 
 app.get('/', function(req, res) {
