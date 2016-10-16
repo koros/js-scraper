@@ -9,7 +9,11 @@ var casper = require('casper').create({
 	}
 });
 
-var links = []; 
+var eventsLinks = [];
+var save_event_api_url = "http://localhost:3000/event";
+var save_siteinfo_api_url = "http://localhost:3000/siteinfo";
+var BASE_URL = 'http://ihub.co.ke';
+var EVENTS_URL = BASE_URL + '/events';
 
 function getEventLinks() {
 	var links = $('.event-box h3 a');
@@ -18,26 +22,24 @@ function getEventLinks() {
 	});
 };
 
-casper.start('http://ihub.co.ke/events', function() {
+casper.start(EVENTS_URL, function() {
     this.echo(this.getTitle());
 });
 
 casper.then(function() {
-	links = [];
-	links = links.concat(this.evaluate(getEventLinks));
-	this.echo(this.getCurrentUrl());
+	eventsLinks = eventsLinks.concat(this.evaluate(getEventLinks));
 });
 
-// follow all the blogs link and extract the contents for each page
+// Follow all the blogs link and extract the contents for each page
 casper.then(function() {
 	//this.echo('-' + links.join('\n\n'));
-	 for (var i = links.length - 1; i >= 0; i--) {
-	 	var url = links[i];
+	 for (var i = 0; i <eventsLinks.length; i++) {
+	 	var url = eventsLinks[i];
 	 	this.echo(url);
-	 	casper.thenOpen('http://ihub.co.ke' + url, function() {
+	 	casper.thenOpen(BASE_URL + url, function() {
 	 		
             var text = this.evaluate(function() {
-		        return document.querySelector(".full-event-details p").outerHTML;
+		        return document.querySelector(".full-event-details").innerHTML;
 		    });
 
 		    var title = this.evaluate(function() {
@@ -49,10 +51,18 @@ casper.then(function() {
 		    });
 
 		    var date = this.evaluate(function() {
-		        return document.querySelector(".attend-details").textContent;
+		        return document.querySelector(".attend-details div.attend-box:nth-child(1)").textContent;
 		    });
 
-			var hostName = this.evaluate(function() {
+		    var venue = this.evaluate(function() {
+		        return document.querySelector(".attend-details div.attend-box:nth-child(2)").textContent;
+		    });
+
+		    var time = this.evaluate(function() {
+		        return document.querySelector(".attend-details div.attend-box:nth-child(3)").textContent;
+		    });
+
+			var hostname = this.evaluate(function() {
 		        return document.querySelector(".host-name").textContent;
 		    });
 
@@ -60,15 +70,46 @@ casper.then(function() {
 		        return document.querySelector('.full-event-image img').src;
 		    });
 
-		    this.echo(' >>> Title :: ' + title);
-		    this.echo(' \t Text :: ' + text);
-		    this.echo(' \t organiser :: ' + organiser);
-		    this.echo(' \t date :: ' + date);
-		    this.echo(' \t hostName :: ' + hostName);
-		    this.echo(' \t image :: ' + img);
+		    var currentUrl = this.getCurrentUrl();
 
+		    this.echo('Title :: ' + title);
+
+		    var postItem = {url:currentUrl, title:title, text:text, organiser:organiser, date:date, time:time, venue:venue, hostname:hostname, img:img};
+
+		    if (title != null) {
+		    	// this.echo('POST DATA ' + JSON.stringify(postItem));
+		    
+			    // Save the data by making post to the node server
+			    casper.thenOpen(save_event_api_url, {
+			      method: "POST",
+			      data: JSON.stringify(postItem),
+			      headers: {
+			        "Content-Type":"application/json"
+			      }
+			    },function() {
+			      console.log('finished');
+			    });
+		    }
+		    
         });
 	 }
+});
+
+casper.then(function() {
+	var postItem = {url:EVENTS_URL, category:'events', urls:eventsLinks};
+	
+    this.echo('POST DATA ' + JSON.stringify(postItem));
+    
+    // Save the data by making post to the node server
+    casper.thenOpen(save_siteinfo_api_url, {
+      method: "POST",
+      data: JSON.stringify(postItem),
+      headers: {
+        "Content-Type":"application/json"
+      }
+    },function() {
+      console.log('finished');
+    });
 });
 
 casper.run(function() {

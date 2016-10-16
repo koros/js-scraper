@@ -7,9 +7,10 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * Blog Schema
+ * Event Schema
  */
-var BlogSchema = new Schema({
+var EventSchema = new Schema({
+  
   url: {
     type: String,
     unique: true,
@@ -26,17 +27,31 @@ var BlogSchema = new Schema({
     default: '',
     trim: true
   },
-  author: {
+  organiser: {
     type: String,
     default: '',
     trim: true
   },
-  initiative: {
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  time: {
     type: String,
     default: '',
     trim: true
   },
-  image: {
+  venue: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  hostname: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  img: {
     type: String,
     default: '',
     trim: true
@@ -47,4 +62,4 @@ var BlogSchema = new Schema({
   }
 });
 
-mongoose.model('Blog', BlogSchema);
+mongoose.model('Event', EventSchema);

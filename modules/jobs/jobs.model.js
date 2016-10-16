@@ -7,9 +7,10 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * Blog Schema
+ * Job Schema
  */
-var BlogSchema = new Schema({
+var JobSchema = new Schema({
+  
   url: {
     type: String,
     unique: true,
@@ -26,17 +27,30 @@ var BlogSchema = new Schema({
     default: '',
     trim: true
   },
-  author: {
+  added: {
+    type: Date,
+    default: Date.now
+  },
+  applyBy: {
+    type: Date,
+    default: Date.now
+  },
+  postedBy: {
     type: String,
     default: '',
     trim: true
   },
-  initiative: {
+  category: {
     type: String,
     default: '',
     trim: true
   },
-  image: {
+  location: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  companyWebsite: {
     type: String,
     default: '',
     trim: true
@@ -47,4 +61,4 @@ var BlogSchema = new Schema({
   }
 });
 
-mongoose.model('Blog', BlogSchema);
+mongoose.model('Job', JobSchema);
