@@ -12,13 +12,31 @@ router.get('/', function(req, res) {
   res.json("Blogs");
 });
 
+router.post('/blogs', function(req, res) {
+  var ids = req.body;
+  
+  console.log('================================================');
+  console.log('RETRIEVING BLOGS WITH IDS :: ' + JSON.stringify(ids));
+  console.log('================================================');
+
+  Blog.find({ "_id": { "$in": ids } }).exec(function (err, _blogs) {
+    if (err){
+      console.log(e.toString());
+      res.status(400).send(e.toString());
+    }else {
+      res.jsonp(_blogs);
+    }
+  });
+
+});
+
 router.post('/', function (req, res) {
   try {
     console.log("Recieved Request From: "+ req.ip);
     var blog = req.body;
     
     console.log('================================================');
-	console.log('RECEIVED BLOG :: ' + blog.title);
+	  console.log('RECEIVED BLOG :: ' + blog.title);
     console.log('================================================');
 
     // Check if the blog already exist; if not then save this

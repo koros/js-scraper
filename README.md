@@ -10,7 +10,6 @@ Sample web scraping project that uses phantomjs and casperjs to scrap contents o
  - execute the following commands from the project root folder
 ```yaml
   npm install
-  casperjs blog.js
 ```
 Thats it, checkout more tutorials from the official <a href="http://docs.casperjs.org/en/latest/quickstart.html"> casperjs </a> 
 and <a href="http://phantomjs.org/quick-start.html"> phantomjs </a> websites

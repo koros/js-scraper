@@ -7,8 +7,38 @@ var _ = require('lodash');
 var mongoose = require ("mongoose");
 var SiteInfo = mongoose.model('SiteInfo');
 
+
 router.get('/', function(req, res) {
-  res.json("SiteMaps");
+  // get the ids of all items currently active on the site
+  SiteInfo.find().distinct('category', function(error, categories) {
+    var catgs = {};
+    if (error) {
+      res.status(400).send(e.toString());
+    }
+    else if (!categories) {
+      res.jsonp(catgs);
+    }
+    
+    _.map(categories, function(item, index) {
+      var query = SiteInfo.find({ 'category': item }).select('_id').exec(function (err, _siteinfo) {
+        if (err) {
+          console.log(e.toString());
+          res.status(400).send(e.toString());
+        }
+        else {
+          if (_siteinfo) {
+            console.log('%s = %s', item, _siteinfo);
+            catgs[item] = _siteinfo;
+          }
+          // retrun if we have reached the end
+          if (index == categories.length - 1) {
+            res.jsonp(catgs);
+          }
+        }
+      });
+
+    });
+  });
 });
 
 router.post('/', function (req, res) {
