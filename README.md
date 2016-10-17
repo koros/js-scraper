@@ -28,3 +28,4 @@ The web scraping service is scheduled with <a href='https://www.npmjs.com/packag
   node scraper.trigger.js 
 ```
   
+<img src='https://github.com/koros/js-scraper/blob/master/public/images/spider_at_work1.png' ></img>
