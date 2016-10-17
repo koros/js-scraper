@@ -11,7 +11,7 @@ var casper = require('casper').create({
 
 var blogLinks = []; 
 var save_blog_api_url = "http://localhost:3000/blog";
-var save_siteinfo_api_url = "http://localhost:3000/siteinfo";
+var save_siteinfo_api_url = "http://localhost:3000/sitemap";
 var BASE_URL = 'http://ihub.co.ke';
 var BLOGS_URL = BASE_URL + '/blogs';
 

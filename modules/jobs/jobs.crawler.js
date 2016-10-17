@@ -11,7 +11,7 @@ var casper = require('casper').create({
 
 var jobsLinks = [];
 var save_job_api_url = "http://localhost:3000/job";
-var save_siteinfo_api_url = "http://localhost:3000/siteinfo";
+var save_siteinfo_api_url = "http://localhost:3000/sitemap";
 var BASE_URL = 'http://ihub.co.ke';
 var JOBS_URL = BASE_URL + '/jobs';
 
