@@ -9,10 +9,23 @@ var mongoose = require ("mongoose");
 var Blog = mongoose.model('Blog');
 
 router.get('/', function(req, res) {
-  res.json("Blogs");
+  var ids = req.body;
+  
+  console.log('================================================');
+  console.log('RETRIEVING ALL BLOGS');
+  console.log('================================================');
+
+  Blog.find().exec(function (err, _blogs) {
+    if (err){
+      console.log(e.toString());
+      res.status(400).send(e.toString());
+    }else {
+      res.jsonp(_blogs);
+    }
+  });
 });
 
-router.post('/blogs', function(req, res) {
+router.post('/sync', function(req, res) {
   var ids = req.body;
   
   console.log('================================================');
