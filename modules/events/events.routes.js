@@ -9,7 +9,38 @@ var eventModel = require('./events.model');
 var Event = mongoose.model('Event');
 
 router.get('/', function(req, res) {
-  res.json("Events");
+  var ids = req.body;
+  
+  console.log('================================================');
+  console.log('RETRIEVING ALL EVENTS');
+  console.log('================================================');
+
+  Event.find().exec(function (err, _events) {
+    if (err){
+      console.log(e.toString());
+      res.status(400).send(e.toString());
+    }else {
+      res.jsonp(_events);
+    }
+  });
+});
+
+router.post('/sync', function(req, res) {
+  var ids = req.body;
+  
+  console.log('================================================');
+  console.log('RETRIEVING EVENTS WITH IDS :: ' + JSON.stringify(ids));
+  console.log('================================================');
+
+  Event.find({ "_id": { "$in": ids } }).exec(function (err, _events) {
+    if (err){
+      console.log(e.toString());
+      res.status(400).send(e.toString());
+    }else {
+      res.jsonp(_events);
+    }
+  });
+
 });
 
 router.post('/', function (req, res) {

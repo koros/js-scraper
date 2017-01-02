@@ -10,7 +10,7 @@ var casper = require('casper').create({
 });
 
 var eventsLinks = [];
-var save_event_api_url = "http://localhost:3000/event";
+var save_event_api_url = "http://localhost:3000/events";
 var save_siteinfo_api_url = "http://localhost:3000/sitemap";
 var BASE_URL = 'http://ihub.co.ke';
 var EVENTS_URL = BASE_URL + '/events';

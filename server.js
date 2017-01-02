@@ -37,9 +37,9 @@ mongoose.connect(dbUrl, function (err, res) {
   }
 });
 
-app.use('/blog', blogs);
-app.use('/event', events);
-app.use('/job', jobs);
+app.use('/blogs', blogs);
+app.use('/events', events);
+app.use('/jobs', jobs);
 app.use('/sitemap', sitemaps);
 
 

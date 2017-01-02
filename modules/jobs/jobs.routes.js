@@ -9,7 +9,38 @@ var mongoose = require ("mongoose");
 var Job = mongoose.model('Job');
 
 router.get('/', function(req, res) {
-  res.json("Jobs");
+  var ids = req.body;
+  
+  console.log('================================================');
+  console.log('RETRIEVING ALL JOBS');
+  console.log('================================================');
+
+  Job.find().exec(function (err, _job) {
+    if (err){
+      console.log(e.toString());
+      res.status(400).send(e.toString());
+    }else {
+      res.jsonp(_job);
+    }
+  });
+});
+
+router.post('/sync', function(req, res) {
+  var ids = req.body;
+  
+  console.log('================================================');
+  console.log('RETRIEVING JOBS WITH IDS :: ' + JSON.stringify(ids));
+  console.log('================================================');
+
+  Job.find({ "_id": { "$in": ids } }).exec(function (err, _jobs) {
+    if (err){
+      console.log(e.toString());
+      res.status(400).send(e.toString());
+    }else {
+      res.jsonp(_jobs);
+    }
+  });
+
 });
 
 router.post('/', function (req, res) {
