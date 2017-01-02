@@ -20,7 +20,7 @@ var mongoose = require ("mongoose");
 var theport = process.env.PORT || 5000;
 
 // connection string
-var dbUrl = process.env.MONGODB_URI || 
+var dbUrl = process.env.MONGOLAB_BLUE_URI || 
   'mongodb://localhost/crawler_data';
 
 var blogs = require('./modules/blogs/blogs.routes');
