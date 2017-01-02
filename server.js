@@ -16,8 +16,12 @@ app.use(morgan('dev'));
 
 var mongoose = require ("mongoose");
 
+// The http server will listen to an appropriate port, or default to 5000
+var theport = process.env.PORT || 5000;
+
 // connection string
-var dbUrl = 'mongodb://localhost/crawler_data';
+var dbUrl = process.env.MONGODB_URI || 
+  'mongodb://localhost/crawler_data';
 
 var blogs = require('./modules/blogs/blogs.routes');
 var events = require('./modules/events/events.routes');
@@ -44,5 +48,5 @@ app.get('/', function(req, res) {
 });
 
 //Set up our app to listen on port 3000
-app.listen(3000);
+app.listen(theport);
 
