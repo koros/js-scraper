@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 var mongoose = require ("mongoose");
 
 // The http server will listen to an appropriate port, or default to 5000
-var theport = process.env.PORT || 5000;
+var theport = process.env.PORT || 3000;
 
 // connection string
 var dbUrl = process.env.MONGOLAB_BLUE_URI || 
