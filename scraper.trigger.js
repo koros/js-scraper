@@ -12,7 +12,7 @@ cron.schedule('*/3 * * * *', function(){
   console.log('Stating crawler task at :: ' + new Date());
   console.log('===========================================================================');
   exec("casperjs modules/blogs/blogs.crawler.js", puts);
-  exec("casperjs modules/events/events.crawler.js", puts);
+  //exec("casperjs modules/events/events.crawler.js", puts);
   exec("casperjs modules/jobs/jobs.crawler.js", puts);
 });
 
